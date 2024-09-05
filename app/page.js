@@ -9,10 +9,8 @@ import React, { useEffect, useRef, useState } from "react";
 const Ground = () => {
   return (
     <RigidBody type="fixed">
-      {" "}
-      {/* Static object */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.5, 0]}>
-        <planeGeometry args={[20, 20]} /> {/* Large plane to simulate road */}
+        <planeGeometry args={[20, 40]} /> {/* Large plane to simulate road */}
         <meshStandardMaterial color="gray" />
       </mesh>
     </RigidBody>
@@ -20,8 +18,35 @@ const Ground = () => {
 };
 
 function Vehicle() {
+  const vehicleRef = useRef();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // console.log(`Key pressed: ${event.key}`);
+
+      if (vehicleRef.current) {
+        switch (event.key) {
+          case "s":
+            vehicleRef.current.applyImpulse({ x: 0, y: 0, z: -5 }, true);
+            break;
+          case "w":
+            vehicleRef.current.applyImpulse({ x: 0, y: 0, z: 5 }, true);
+            break;
+          default:
+            break;
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
-    <RigidBody position={[0, 0, 0]} colliders="hull">
+    <RigidBody ref={vehicleRef} position={[0, 0, 0]} colliders="hull">
       {/* Rectangular body */}
       <mesh>
         <boxGeometry args={[2, 1, 4]} />
@@ -86,7 +111,7 @@ function FallingShapes() {
 
 const page = () => {
   return (
-    <Canvas camera={{ position: [0, 2, 10], fov: 50 }}>
+    <Canvas camera={{ position: [0, 4, -8], fov: 50 }}>
       <OrbitControls />
       <ambientLight intensity={0.5} />
       <spotLight position={[10, 10, 10]} intensity={1} />
