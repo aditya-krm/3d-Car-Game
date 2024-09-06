@@ -19,18 +19,31 @@ const Ground = () => {
 
 function Vehicle() {
   const vehicleRef = useRef();
+  const [rotationY, setRotationY] = useState(0);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      // console.log(`Key pressed: ${event.key}`);
-
       if (vehicleRef.current) {
+        // Calculate the direction vector based on the current rotationY
+        const direction = {
+          x: Math.sin(rotationY), // Forward/backward direction
+          z: Math.cos(rotationY), // Left/right direction
+        };
+
         switch (event.key) {
           case "s":
-            vehicleRef.current.applyImpulse({ x: 0, y: 0, z: -5 }, true);
+            // Move backward in the direction the vehicle is facing
+            vehicleRef.current.applyImpulse(
+              { x: -direction.x * 5, y: 0, z: -direction.z * 5 },
+              true
+            );
             break;
           case "w":
-            vehicleRef.current.applyImpulse({ x: 0, y: 0, z: 5 }, true);
+            // Move forward in the direction the vehicle is facing
+            vehicleRef.current.applyImpulse(
+              { x: direction.x * 5, y: 0, z: direction.z * 5 },
+              true
+            );
             break;
           default:
             break;
@@ -38,15 +51,28 @@ function Vehicle() {
       }
     };
 
+    const handleMouseMove = (event) => {
+      const mouseX = event.movementX; // Track horizontal mouse movement
+      const sensitivity = 0.005; // Adjust for more or less sensitivity
+      setRotationY((prevRotationY) => prevRotationY - mouseX * sensitivity);
+    };
+
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [rotationY]); // Update useEffect to depend on rotationY
 
   return (
-    <RigidBody ref={vehicleRef} position={[0, 0, 0]} colliders="hull">
+    <RigidBody
+      ref={vehicleRef}
+      position={[0, 0, 0]}
+      rotation={[0, rotationY, 0]} // Apply rotation based on mouse movement
+      colliders="hull"
+    >
       {/* Rectangular body */}
       <mesh>
         <boxGeometry args={[2, 1, 4]} />
@@ -116,7 +142,7 @@ const page = () => {
       <ambientLight intensity={0.5} />
       <spotLight position={[10, 10, 10]} intensity={1} />
       <Physics>
-        <Ground /> {/* Add ground to keep the vehicle stable */}
+        <Ground />
         <Vehicle />
         {/* <FallingShapes /> */}
       </Physics>
