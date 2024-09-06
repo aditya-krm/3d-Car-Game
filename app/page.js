@@ -4,7 +4,7 @@ import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 
-// import FallingShapes from "@/components/fallingShapes";
+import FallingShapes from "@/components/fallingShapes";
 import Ground from "@/components/ground";
 import Vehicle from "@/components/vehicle";
 
@@ -17,7 +17,7 @@ const Page = () => {
       <Physics>
         <Ground />
         <Vehicle />
-        {/* <FallingShapes /> */}
+        <FallingShapes />
       </Physics>
     </Canvas>
   );
