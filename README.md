@@ -4,7 +4,9 @@ Welcome to the Vehicle Survival Game! This game is built using React-three libra
 
 Note: This project is an ongoing learning experience as I explore Three.js and React-three-fiber, Drei, Rapier for the first time.
 
-- This project is still in progress and will be updated with new features and improvements.
+i- This project is still in progress and will be updated with new features and improvements.
+
+[Uploaded onn vercel](https://3d-car-game-rho.vercel.app/)
 
 ## Table of Contents
 

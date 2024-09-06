@@ -34,7 +34,7 @@ function Vehicle() {
 
     const handleMouseMove = (event) => {
       const mouseX = event.movementX;
-      const sensitivity = 0.005;
+      const sensitivity = 0.001;
       setRotationY((prevRotationY) => prevRotationY - mouseX * sensitivity);
     };
 
