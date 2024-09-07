@@ -56,7 +56,7 @@ function Vehicle() {
     >
       <mesh>
         <boxGeometry args={[2, 1, 4]} />
-        <meshStandardMaterial color="blue" />
+        <meshStandardMaterial color="white" />
       </mesh>
 
       <mesh position={[0, -0.5, 1.5]}>

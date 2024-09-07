@@ -12,10 +12,10 @@ function FallingShapes() {
         {
           id: Math.random(),
           type: shapes[Math.floor(Math.random() * shapes.length)],
-          position: [Math.random() * 10 - 5, 5, Math.random() * 10 - 5],
+          position: [Math.random() * 20 - 10, 5, Math.random() * 120 - 40], // Covers all ground areas
         },
       ]);
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
@@ -23,13 +23,17 @@ function FallingShapes() {
     <RigidBody
       key={object.id}
       position={object.position}
-      mass={Math.random() * 5}
+      mass={object.type === "sphere" ? 1 : 3} // Give lighter mass to spheres for realistic rolling
+      friction={0.5} // Moderate friction for realistic sliding
+      restitution={0.2} // Add slight bounciness
     >
       <mesh>
         {object.type === "box" && <boxGeometry args={[1, 1, 1]} />}
         {object.type === "sphere" && <sphereGeometry args={[1, 16, 16]} />}
         {object.type === "cone" && <coneGeometry args={[1, 2, 16]} />}
-        <meshStandardMaterial color="red" />
+        <meshStandardMaterial
+          color={object.type === "sphere" ? "blue" : "red"}
+        />
       </mesh>
     </RigidBody>
   ));
